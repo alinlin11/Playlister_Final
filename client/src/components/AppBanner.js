@@ -13,12 +13,15 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useLocation } from 'react-router-dom';
 
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
+    let location = useLocation();
 
     const handleProfileMenuOpen = (event) => {
         // console.log(event.currentTarget);
@@ -35,7 +38,7 @@ export default function AppBanner() {
     }
 
     const handleHomeClick = () => {
-        if(store.currentList != null) 
+        if (store.currentList != null)
             store.closeCurrentList();
     }
 
@@ -97,37 +100,45 @@ export default function AppBanner() {
             return <AccountCircle />;
     }
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#E70E0E',
+            },
+        },
+    });
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography
-                        variant="h4"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}
-                    >
-                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/' onClick={handleHomeClick}>⌂</Link>
-                    </Typography>
-                    <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            {getAccountMenu(auth.loggedIn)}
-                        </IconButton>
-                    </Box>
-                </Toolbar>
-            </AppBar>
-            {
-                menu
-            }
-        </Box>
+        location.pathname != '/' ?
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="static" sx={{ background: "#BEBEBE" }}>
+                    <Toolbar>
+                        <Typography
+                            variant="h4"
+                            noWrap
+                            component="div"
+                            sx={{ display: { xs: 'none', sm: 'block' }, color: "red", fontFamily: "fancy", fontStyle: "italic", fontWeight: "600" }}>
+                            Playlister
+                        </Typography>
+                        <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
+                        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                            <IconButton
+                                size="large"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                {getAccountMenu(auth.loggedIn)}
+                            </IconButton>
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+                {
+                    menu
+                }
+            </Box > : <></>
     );
 }
