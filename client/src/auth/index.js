@@ -132,7 +132,7 @@ function AuthContextProvider(props) {
                         error: null
                     }
                 })
-                history.push("/");
+                history.push("/home");
             }
         }
 

@@ -111,7 +111,7 @@ export default function AppBanner() {
     return (
         location.pathname != '/' ?
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static" sx={{ background: "#BEBEBE" }}>
+                <AppBar position="static" sx={{ background: "#8EC5FC" }}>
                     <Toolbar>
                         <Typography
                             variant="h4"

@@ -9,7 +9,7 @@ import { Typography } from '@mui/material'
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
-    let text ="";
+    let text = "";
     if (store.currentList)
         text = store.currentList.name;
     return (
@@ -17,6 +17,7 @@ function Statusbar() {
             <Typography variant="h4">{text}</Typography>
         </div>
     );
+
 }
 
 export default Statusbar;

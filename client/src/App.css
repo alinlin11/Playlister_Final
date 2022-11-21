@@ -7,7 +7,7 @@
         @author McKilla Gorilla
     */
   --swatch-foundation: #eeeedd;
-  --swatch-primary: #e6e6e6;
+  --swatch-primary: #61c256;
   --swatch-complement: #e1e4cb;
   --swatch-contrast: #111111;
   --swatch-accent: #669966;
@@ -64,7 +64,6 @@ body {
   border-radius: 10px;
   padding-top: 5%;
   padding-bottom: 5%;
-  height: 70%;
   vertical-align: center;
 }
 
@@ -95,13 +94,12 @@ body {
   bottom: 170px;
 }
 
-
 #splash-screen h4 {
   color: rgb(0, 0, 0);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1vw;
   position: relative;
-  bottom: 40px;
+  bottom: -80px;
   text-align: left;
 }
 
