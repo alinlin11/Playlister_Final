@@ -19,7 +19,7 @@ export default function Navigation() {
   console.log(location.pathname == '/home');
 
   return (
-    location.pathName == '/home' ?
+    location.pathname == '/home' ?
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ background: "#000000" }}>
           <Toolbar>

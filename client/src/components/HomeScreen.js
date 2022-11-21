@@ -1,12 +1,16 @@
 import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
-import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
 
-import AddIcon from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab'
-import List from '@mui/material/List';
+
 import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -14,6 +18,13 @@ import Typography from '@mui/material/Typography'
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: "#f1ee8e",
+        ...theme.typography.body2,
+        padding: theme.spacing(4),
+        textAlign: 'center',
+    }));
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -25,38 +36,96 @@ const HomeScreen = () => {
     let listCard = "";
     if (store) {
         listCard =
-            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
+            <Grid container
+                direction="column"
+                justifyContent="center"
+                spacing={{ xs: 0, md: 2 }}
+                columns={{ xs: 4, md: 12 }}
+
+            >
                 {
                     store.idNamePairs.map((pair) => (
-                        <ListCard
+                        <Grid item
+                            xs
                             key={pair._id}
-                            idNamePair={pair}
-                            selected={false}
-                        />
+                            // idNamePair={pair}
+                            selected={false} >
+                            <Box
+                                sx={{
+                                    width: 690,
+                                    height: 100,
+                                    backgroundColor: 'white',
+                                    marginLeft: "10px",
+                                    borderRadius: 3
+                                }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        marginLeft: "5px"
+                                    }}>
+                                    {pair.name}
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: "14px",
+                                        fontWeight: "bold",
+                                        marginLeft: "5px",
+                                        marginTop: "5px"
+                                    }}>
+                                    by:
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: "14px",
+                                        fontWeight: "bold",
+                                        marginLeft: "5px",
+                                        marginTop: "16px"
+                                    }}>
+                                    Published:
+                                </Typography>
+
+                                <ThumbUpOffAltIcon
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "400px",
+                                        bottom: "80px"
+                                    }}>
+                                </ThumbUpOffAltIcon>
+
+                                <ThumbDownOffAltIcon
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "80px",
+                                        bottom: "80px"
+                                    }}>
+                                </ThumbDownOffAltIcon>
+
+                                <KeyboardDoubleArrowDownIcon size="large"
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "100px",
+                                        bottom: "20px"
+                                    }}>
+                                </KeyboardDoubleArrowDownIcon>
+                            </Box>
+                        </Grid>
                     ))
                 }
-            </List>;
+            </Grid >;
     }
     return (
-        <div id="playlist-selector">
-            <div id="list-selector-heading">
-                <Typography variant="h2">Your Lists</Typography>
-            </div>
-            <div id="list-selector-list">
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    id="add-list-button"
-                    onClick={handleCreateNewList}
-                >
-                    <AddIcon />
-                </Fab>
-                {
-                    listCard
-                }
-                <MUIDeleteModal />
-            </div>
+
+        <div id="list-selector-list">
+
+            {
+                listCard
+            }
+            <MUIDeleteModal />
         </div>)
+
 }
 
 export default HomeScreen;

@@ -1,6 +1,13 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
+
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
 import { Typography } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab'
+
 
 /*
     Our Status bar React component goes at the bottom of our UI.
@@ -9,14 +16,40 @@ import { Typography } from '@mui/material'
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
+
     let text = "";
     if (store.currentList)
         text = store.currentList.name;
+
+    function handleCreateNewList() {
+        store.createNewList();
+    }
+
     return (
-        <div id="playlister-statusbar">
-            <Typography variant="h4">{text}</Typography>
-        </div>
-    );
+        // <div id="playlister-statusbar">
+        //     <Typography variant="h4">{text}</Typography>
+        // </div> );
+        
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="absolute" sx={{ background: "#000000", top:"100%" }}>
+                <Toolbar>
+                    <div id="playlister-statusbar">
+                        <div id="list-selector-heading">
+                            <Typography variant="h3">Your Lists</Typography>
+                        </div>
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            id="add-list-button"
+                            onClick={handleCreateNewList}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </div >
+                </Toolbar>
+            </AppBar>
+        </Box>
+    )
 
 }
 
