@@ -39,7 +39,7 @@ export default function MUIRemoveSongModal() {
 
     return (
         <Modal
-            open={store.currentSong !== null}
+        open={store.currentSong !== null}
         >
             <Box sx={style}>
                 <div
@@ -48,7 +48,7 @@ export default function MUIRemoveSongModal() {
                     data-animation="slideInOutLeft">
                     <div className="modal-root" id='verify-remove-song-root'>
                         <div className="modal-north">
-                           <b> Remove {songTitle}? </b> 
+                            <b> Remove {songTitle}? </b>
                         </div>
                         <div className="modal-center">
                             <div className="modal-center-content">

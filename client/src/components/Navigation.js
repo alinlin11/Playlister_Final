@@ -16,7 +16,7 @@ import SortIcon from '@mui/icons-material/Sort';
 export default function Navigation() {
   const { store } = useContext(GlobalStoreContext);
   let location = useLocation();
-  console.log(location.pathname == '/home');
+  // console.log(location.pathname == '/home');
 
   return (
     location.pathname == '/home' ?

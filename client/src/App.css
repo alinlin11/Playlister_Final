@@ -204,19 +204,24 @@ body {
   left: 0%;
   top: 21%;
   width: 60%;
-  height:80%;
+  height: 80%;
   /* z-index: 1; */
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
 }
 
+#youtube_test_player {
+  border: solid 4px #37474F
+}
+
 .list-card,
 .selected-list-card,
 .unselected-list-card {
   font-size: 18pt;
-  margin: 10px;
-  padding: 20px;
+  margin: 5px;
+  color:rgb(253, 246, 246);
+  padding: 5px;
   border-radius: 25px;
 }
 
@@ -240,7 +245,7 @@ body {
 }
 
 .unselected-list-card {
-  background-color: var(--swatch-complement);
+  background-color: #6d6de5;
 }
 
 .list-card-button {

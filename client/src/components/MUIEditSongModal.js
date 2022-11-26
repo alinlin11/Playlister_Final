@@ -49,6 +49,8 @@ export default function MUIEditSongModal() {
         setYouTubeId(event.target.value);
     }
 
+    console.log(store.currentSong);
+
     return (
         <Modal
             open={store.currentSong !== null}
