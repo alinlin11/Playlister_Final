@@ -81,7 +81,7 @@ deletePlaylist = async (req, res) => {
 getPlaylistById = async (req, res) => {
     console.log("Find Playlist with id: " + JSON.stringify(req.params.id));
 
-    await Playlist.findById({ _id: req.params.id }, (err, list) => {
+    await Playlist.findOne({ _id: req.params.id }, (err, list) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
@@ -132,10 +132,13 @@ getPlaylistPairs = async (req, res) => {
                         let pair = {
                             _id: list._id,
                             name: list.name,
+                            username: list.username,
                             likes: list.likes,
                             dislikes: list.dislikes,
                             listens: list.listens,
-                            published: list.published
+                            published: list.published,
+                            publishedDate: list.publishedDate,
+                            comments: list.comments
                         };
                         pairs.push(pair);
                     }
@@ -171,7 +174,7 @@ updatePlaylist = async (req, res) => {
         })
     }
 
-    Playlist.findOne({ _id: req.params.id }, (err, playlist) => {
+    Playlist.findById({ _id: req.params.id }, (err, playlist) => {
         console.log("playlist found: " + JSON.stringify(playlist));
         if (err) {
             return res.status(404).json({
@@ -191,6 +194,12 @@ updatePlaylist = async (req, res) => {
 
                     list.name = body.playlist.name;
                     list.songs = body.playlist.songs;
+                    list.likes = body.playlist.likes;
+                    list.dislikes = body.playlist.dislikes;
+                    list.listens = body.playlist.listens;
+                    list.published = body.playlist.published;
+                    list.publishedDate = body.playlist.publishedDate;
+                    list.comments = body.playlist.comments;
                     list
                         .save()
                         .then(() => {

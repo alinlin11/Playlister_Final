@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import SongCard from './SongCard'
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
@@ -30,6 +31,8 @@ import { style } from '@mui/system';
 */
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const [expand, setExpand] = useState(0);
@@ -95,7 +98,7 @@ function ListCard(props) {
         }
     }
 
-    function handleUndo(event) { 
+    function handleUndo(event) {
         event.stopPropagation();
         store.undo();
     }
@@ -103,7 +106,12 @@ function ListCard(props) {
     function handleRedo(event) {
         event.stopPropagation();
         store.redo();
-     }
+    }
+
+    function handlePublish(event, id) {
+        event.stopPropagation();
+        store.publishList(id);
+    }
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
@@ -158,6 +166,7 @@ function ListCard(props) {
         modalJSX = <MUIRemoveSongModal />;
     }
 
+
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -187,7 +196,6 @@ function ListCard(props) {
                     </Typography>
 
 
-
                     <Typography
                         sx={{
                             fontSize: "14px",
@@ -195,356 +203,376 @@ function ListCard(props) {
                             marginLeft: "5px",
                             marginTop: "5px"
                         }}>
-                        by:
+                        by: {idNamePair.username}
                     </Typography>
 
-                    <Typography
-                        sx={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            marginLeft: "5px",
-                            marginTop: "16px"
-                        }}>
-                        Published:
-                    </Typography>
+                    {idNamePair.published == true ?
 
-                    <Typography
-                        sx={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            marginLeft: "450px",
-                            marginTop: "-20px"
-                        }}>
-                        Listens: {idNamePair.listens}
-                    </Typography>
+                        <Box>
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    marginLeft: "5px",
+                                    marginTop: "16px"
+                                }}>
+                                Published:
+                            </Typography>
 
-                    <Box>
-                        <Button
-                            sx={{
-                                position: "relative",
-                                marginLeft: "400px",
-                                bottom: "110px"
-                            }}>
-                            <ThumbUpOffAltIcon
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    marginLeft: "450px",
+                                    marginTop: "-20px"
+                                }}>
+                                Listens: {idNamePair.listens}
+                            </Typography>
+
+                            <Box>
+                                <Button
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "400px",
+                                        bottom: "110px"
+                                    }}>
+                                    <ThumbUpOffAltIcon
+                                    >
+                                    </ThumbUpOffAltIcon>
+                                </Button>
+                                <Typography
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "450px",
+                                        bottom: "150px",
+                                        fontWeight: "bold"
+                                    }}>
+                                    {idNamePair.likes}
+                                </Typography>
+                            </Box>
+
+                            <Box>
+                                <Button
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "530px",
+                                        bottom: "207px"
+                                    }}>
+                                    <ThumbDownOffAltIcon>
+                                    </ThumbDownOffAltIcon>
+                                </Button>
+
+                                <Typography
+                                    sx={{
+                                        position: "relative",
+                                        marginLeft: "580px",
+                                        bottom: "249px",
+                                        fontWeight: "bold"
+
+                                    }}>
+                                    {idNamePair.dislikes}
+                                </Typography>
+                            </Box>
+
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "630px",
+                                    bottom: "250px"
+                                }}
                             >
-                            </ThumbUpOffAltIcon>
-                        </Button>
-                        <Typography
-                            sx={{
-                                position: "relative",
-                                marginLeft: "450px",
-                                bottom: "150px",
-                                fontWeight: "bold"
-                            }}>
-                            {idNamePair.likes}
-                        </Typography>
-                    </Box>
+                                <KeyboardDoubleArrowDownIcon size="large" style={{ color: "black" }}>
+                                </KeyboardDoubleArrowDownIcon>
+                            </Button>
 
-                    <Box>
-                        <Button
-                            sx={{
-                                position: "relative",
-                                marginLeft: "530px",
-                                bottom: "207px"
-                            }}>
-                            <ThumbDownOffAltIcon>
-                            </ThumbDownOffAltIcon>
-                        </Button>
+                        </Box> :
 
-                        <Typography
-                            sx={{
-                                position: "relative",
-                                marginLeft: "580px",
-                                bottom: "249px",
-                                fontWeight: "bold"
+                        /////////// UNPUBLISHED ///////////////
+                        <Box>
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "630px",
+                                    bottom: "10px"
+                                }}
+                            >
+                                <KeyboardDoubleArrowDownIcon size="large" style={{ color: "black" }}>
+                                </KeyboardDoubleArrowDownIcon>
+                            </Button>
+                        </Box>
+                    }
 
-                            }}>
-                            {idNamePair.dislikes}
-                        </Typography>
-                    </Box>
-
-                    <Button
-                        sx={{
-                            position: "relative",
-                            marginLeft: "630px",
-                            bottom: "250px"
-                        }}
-                    >
-                        <KeyboardDoubleArrowDownIcon size="large" style={{ color: "black" }}>
-                        </KeyboardDoubleArrowDownIcon>
-                    </Button>
                 </Box> :
 
 
-                //         // EXPANDED LIST
-                //         <Box
-                //             sx={{
-                //                 width: 690,
-                //                 height: 480,
-                //                 backgroundColor: 'white',
-                //                 marginLeft: "10px",
-                //                 borderRadius: 3
-                //             }}>
-                //             <Typography
-                //                 sx={{
-                //                     fontSize: "20px",
-                //                     fontWeight: "bold",
-                //                     marginLeft: "5px"
-                //                 }}>
-                //                 {idNamePair.name}
-                //             </Typography>
-
-                //             <Typography
-                //                 sx={{
-                //                     fontSize: "14px",
-                //                     fontWeight: "bold",
-                //                     marginLeft: "5px",
-                //                     marginTop: "5px"
-                //                 }}>
-                //                 by:
-                //             </Typography>
-
-                //             <Button
-                //                 sx={{
-                //                     position: "relative",
-                //                     marginLeft: "400px",
-                //                     bottom: "60px"
-                //                 }}>
-                //                 <ThumbUpOffAltIcon>
-                //                 </ThumbUpOffAltIcon>
-                //             </Button>
-
-
-                //             <Button
-                //                 sx={{
-                //                     position: "relative",
-                //                     marginLeft: "80px",
-                //                     bottom: "60px"
-                //                 }}>
-                //                 <ThumbDownOffAltIcon>
-                //                 </ThumbDownOffAltIcon>
-                //             </Button>
-
-                //             <Box
-                //                 sx={{
-                //                     position: "relative",
-                //                     width: 640,
-                //                     height: 300,
-                //                     marginLeft: "20px",
-                //                     bottom: "50px",
-                //                     backgroundColor: 'primary.dark',
-                //                     borderRadius: 3,
-                //                 }}
-                //                 style={{ overflow: "auto" }}
-                //             >
-                //                 {store.currentList !== null ?
-                //                     store.currentList.songs.map((song, index) => (
-                //                         <Typography
-                //                             sx={{ color: "orange", fontWeight: "bold", marginLeft: "5px", m: 1 }}
-                //                         >
-                //                             {index + 1}.  {song.title} by {song.artist}
-                //                         </Typography>
-                //                     )) : ""
-                //                 }
-                //             </Box>
-
-                //             <Button
-                //                 variant="outlined"
-                //                 sx={{
-                //                     bottom: "65px",
-                //                     marginLeft: "450px"
-                //                 }}
-                //                 onClick={(event) => { handleDeleteList(event, idNamePair._id) }}
-                //             >
-                //                 Delete
-                //             </Button>
-
-
-                //             <Button
-                //                 variant="outlined"
-                //                 sx={{
-                //                     bottom: "138px",
-                //                     marginLeft: "550px"
-                //                 }}
-                //                 onClick={(event) => { handleDuplicateList(event, idNamePair._id) }}
-                //             >
-                //                 Duplicate
-                //             </Button>
-
-                //             <Typography
-                //                 sx={{
-                //                     fontSize: "14px",
-                //                     fontWeight: "bold",
-                //                     position: "relative",
-                //                     marginLeft: "5px",
-                //                     bottom: "130px"
-                //                 }}>
-                //                 Published:
-                //             </Typography>
-
-                //             <Typography
-                //                 sx={{
-                //                     fontSize: "14px",
-                //                     fontWeight: "bold",
-                //                     position: "relative",
-                //                     marginLeft: "400px",
-                //                     bottom: "150px"
-                //                 }}>
-                //                 Listens:
-                //             </Typography>
-
-                //             <Button
-                //                 sx={{
-                //                     position: "relative",
-                //                     marginLeft: "600px",
-                //                     bottom: "200px"
-                //                 }}
-                //                 onClick={(event) => { handleCollapse(event) }}>
-                //                 <KeyboardDoubleArrowUpIcon size="large" style={{ color: "black" }}>
-                //                 </KeyboardDoubleArrowUpIcon>
-                //             </Button>
-
-                //         </Box>
-                //     }
                 // </ListItem >
 
-                //////////////////////////////  WORKSPACE WHEN LIST IS CLICKED  //////////////////////////////////////
-                <Box
-                    sx={{
-                        width: 690,
-                        height: 480,
-                        backgroundColor: 'white',
-                        marginLeft: "10px",
-                        borderRadius: 3
-                    }}>
-                    <Typography
-                        sx={{
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                            marginLeft: "5px"
-                        }}>
-                        {idNamePair.name}
-                    </Typography>
+                <Box>
+                    {idNamePair.published == false ?
+                        //////////////////////////////  WORKSPACE WHEN LIST IS CLICKED  //////////////////////////////////////
+                        <Box
+                            sx={{
+                                width: 690,
+                                height: 480,
+                                backgroundColor: 'white',
+                                marginLeft: "10px",
+                                borderRadius: 3
+                            }}>
+                            <Typography
+                                sx={{
+                                    fontSize: "20px",
+                                    fontWeight: "bold",
+                                    marginLeft: "5px"
+                                }}>
+                                {idNamePair.name}
+                            </Typography>
 
-                    <Typography
-                        sx={{
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            marginLeft: "5px",
-                            marginTop: "5px"
-                        }}>
-                        by:
-                    </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    marginLeft: "5px",
+                                    marginTop: "5px"
+                                }}>
+                                by: {idNamePair.username}
+                            </Typography>
 
-                    <List
-                        id="playlist-cards"
-                        sx={{ width: '100%', height: '60%', overflow: "auto" }}
-                    >
-                        {
-                            store.currentList !== null ?
-                                store.currentList.songs.map((song, index) => (
+                            <List
+                                id="playlist-cards"
+                                sx={{ width: '100%', height: '60%', overflow: "auto" }}
+                            >
+                                {
+                                    store.currentList !== null ?
+                                        store.currentList.songs.map((song, index) => (
 
-                                    <div
-                                        key={index}
-                                        id={'song-' + index + '-card'}
-                                        className={cardClass}
-                                        onClick={(event) => { handleEditSong(event, index, song) }}
-                                    // onDragStart={handleDragStart}
-                                    // onDragOver={handleDragOver}
-                                    // onDragEnter={handleDragEnter}
-                                    // onDragLeave={handleDragLeave}
-                                    // onDrop={handleDrop}
-                                    // draggable="true"
-                                    // onClick={handleClick}
-                                    >
-                                        <SongCard
-                                            id={'playlist-song-' + (index)}
-                                            key={'playlist-song-' + (index)}
-                                            index={index}
-                                            song={song}
-                                        />
+                                            <div
+                                                key={index}
+                                                id={'song-' + index + '-card'}
+                                                className={cardClass}
+                                                onClick={(event) => { handleEditSong(event, index, song) }}
+                                            // onDragStart={handleDragStart}
+                                            // onDragOver={handleDragOver}
+                                            // onDragEnter={handleDragEnter}
+                                            // onDragLeave={handleDragLeave}
+                                            // onDrop={handleDrop}
+                                            // draggable="true"
+                                            // onClick={handleClick}
+                                            >
+                                                <SongCard
+                                                    id={'playlist-song-' + (index)}
+                                                    key={'playlist-song-' + (index)}
+                                                    index={index}
+                                                    song={song}
+                                                />
 
-                                        <Button
-                                            sx={{
-                                                marginLeft: "600px",
-                                                marginTop: "-10px"
-                                            }}
-                                            onClick={(event) => { handleDeleteSong(event, index, song) }}
-                                        >
-                                            <ClearIcon size="large" style={{ color: "white" }}></ClearIcon>
-                                        </Button>
+                                                <Button
+                                                    sx={{
+                                                        marginLeft: "600px",
+                                                        marginTop: "-10px"
+                                                    }}
+                                                    onClick={(event) => { handleDeleteSong(event, index, song) }}
+                                                >
+                                                    <ClearIcon size="large" style={{ color: "white" }}></ClearIcon>
+                                                </Button>
 
-                                        {/* <input
-                                type="button"
-                                id={"remove-song-" + index}
-                                className="list-card-button"
-                                value={"\u2715"}
-                            // onClick={handleRemoveSong}
-                            /> */}
+                                            </div>
+                                        )) : <></>
+                                }
 
-                                    </div>
-                                )) : <></>
-                        }
+                                <div
+                                    className={cardClass}
+                                    onClick={(event) => { handleAddSong(event) }}>
+                                    <Button
+                                        sx={{ marginLeft: "300px" }} >
+                                        <AddIcon size="large" style={{ color: "white" }}></AddIcon>
+                                    </Button>
+                                </div>
+                            </List>
 
-                        <div
-                            className={cardClass}
-                            onClick={(event) => { handleAddSong(event) }}>
-                            <Button
-                                sx={{ marginLeft: "300px" }} >
-                                <AddIcon size="large" style={{ color: "white" }}></AddIcon>
+                            <Button variant="outlined"
+                                sx={{
+                                    marginLeft: "20px"
+                                }}
+                                onClick={handleUndo}>
+                                Undo
                             </Button>
-                        </div>
-                    </List>
 
-                    <Button variant="outlined"
-                        sx={{
-                            marginLeft: "20px"
-                        }}
-                        onClick={handleUndo}>
-                        Undo
-                    </Button>
+                            <Button variant="outlined"
+                                sx={{
+                                    marginLeft: "5px"
+                                }}
+                                onClick={handleRedo}>
+                                Redo
+                            </Button>
 
-                    <Button variant="outlined"
-                        sx={{
-                            marginLeft: "5px"
-                        }}
-                        onClick={handleRedo}>
-                        Redo
-                    </Button>
 
-                    <Button variant="outlined"
-                        sx={{
-                            marginLeft: "190px"
-                        }}>
-                        Publish
-                    </Button>
+                            <Button variant="outlined"
+                                sx={{
+                                    marginLeft: "190px"
+                                }}
+                                onClick={(event) => handlePublish(event, idNamePair._id)}
+                                >
+                                Publish
+                            </Button>
 
-                    <Button variant="outlined"
-                        sx={{
-                            marginLeft: "5px"
-                        }}
-                        onClick={(event) => { handleDeleteList(event, idNamePair._id) }}>
-                        Delete
-                    </Button>
+                            <Button variant="outlined"
+                                sx={{
+                                    marginLeft: "5px"
+                                }}
+                                onClick={(event) => { handleDeleteList(event, idNamePair._id) }}>
+                                Delete
+                            </Button>
 
-                    <Button variant="outlined"
-                        sx={{
-                            marginLeft: "5px"
-                        }}>
-                        Duplicate
-                    </Button>
+                            <Button variant="outlined"
+                                sx={{
+                                    marginLeft: "5px"
+                                }}>
+                                Duplicate
+                            </Button>
 
-                    <Button
-                        sx={{
-                            position: "relative",
-                            marginLeft: "630px",
-                            bottom: "20px"
-                        }}>
-                        <KeyboardDoubleArrowUpIcon size="large">
-                        </KeyboardDoubleArrowUpIcon>
-                    </Button>
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "630px",
+                                    bottom: "20px"
+                                }}>
+                                <KeyboardDoubleArrowUpIcon size="large">
+                                </KeyboardDoubleArrowUpIcon>
+                            </Button>
 
-                </Box >
+                        </Box > :
+
+                        // EXPANDED LIST
+                        <Box
+                            sx={{
+                                width: 690,
+                                height: 480,
+                                backgroundColor: 'white',
+                                marginLeft: "10px",
+                                borderRadius: 3
+                            }}>
+                            <Typography
+                                sx={{
+                                    fontSize: "20px",
+                                    fontWeight: "bold",
+                                    marginLeft: "5px"
+                                }}>
+                                {idNamePair.name}
+                            </Typography>
+
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    marginLeft: "5px",
+                                    marginTop: "5px"
+                                }}>
+                                by:
+                            </Typography>
+
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "400px",
+                                    bottom: "60px"
+                                }}>
+                                <ThumbUpOffAltIcon>
+                                </ThumbUpOffAltIcon>
+                            </Button>
+
+
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "80px",
+                                    bottom: "60px"
+                                }}>
+                                <ThumbDownOffAltIcon>
+                                </ThumbDownOffAltIcon>
+                            </Button>
+
+                            <Box
+                                sx={{
+                                    position: "relative",
+                                    width: 640,
+                                    height: 300,
+                                    marginLeft: "20px",
+                                    bottom: "50px",
+                                    backgroundColor: 'primary.dark',
+                                    borderRadius: 3,
+                                }}
+                                style={{ overflow: "auto" }}
+                            >
+                                {store.currentList !== null ?
+                                    store.currentList.songs.map((song, index) => (
+                                        <Typography
+                                            sx={{ color: "orange", fontWeight: "bold", marginLeft: "5px", m: 1 }}
+                                        >
+                                            {index + 1}.  {song.title} by {song.artist}
+                                        </Typography>
+                                    )) : ""
+                                }
+                            </Box>
+
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    bottom: "65px",
+                                    marginLeft: "450px"
+                                }}
+                                onClick={(event) => { handleDeleteList(event, idNamePair._id) }}
+                            >
+                                Delete
+                            </Button>
+
+
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    bottom: "138px",
+                                    marginLeft: "550px"
+                                }}
+                                onClick={(event) => { handleDuplicateList(event, idNamePair._id) }}
+                            >
+                                Duplicate
+                            </Button>
+
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    position: "relative",
+                                    marginLeft: "5px",
+                                    bottom: "130px"
+                                }}>
+                                Published:
+                            </Typography>
+
+                            <Typography
+                                sx={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    position: "relative",
+                                    marginLeft: "400px",
+                                    bottom: "150px"
+                                }}>
+                                Listens:
+                            </Typography>
+
+                            <Button
+                                sx={{
+                                    position: "relative",
+                                    marginLeft: "600px",
+                                    bottom: "200px"
+                                }}
+                                onClick={(event) => { handleCollapse(event) }}>
+                                <KeyboardDoubleArrowUpIcon size="large" style={{ color: "black" }}>
+                                </KeyboardDoubleArrowUpIcon>
+                            </Button>
+
+                        </Box>
+                    }
+                </Box>
 
             }
             {modalJSX}

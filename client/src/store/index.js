@@ -286,7 +286,8 @@ function GlobalStoreContextProvider(props) {
             }
 
             async function asyncCreateNewList() {
-                const response = await api.createPlaylist(newListName, [], auth.user.email, 0, 0, 0, false);
+                let username = auth.getUsername();
+                const response = await api.createPlaylist(newListName, [], auth.user.email, username, 0, 0, 0, false, " ", []);
                 console.log("createNewList response: " + response);
                 if (response.status === 201) {
                     tps.clearAllTransactions();
@@ -336,6 +337,7 @@ function GlobalStoreContextProvider(props) {
     // FUNCTIONS ARE markListForDeletion, deleteList, deleteMarkedList,
     // showDeleteListModal, and hideDeleteListModal
     store.markListForDeletion = function (id) {
+        console.log(id);
         async function getListToDelete(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
@@ -422,6 +424,36 @@ function GlobalStoreContextProvider(props) {
         asyncSetCurrentList(id);
         console.log("CURRENT LIST");
     }
+
+    store.publishList = function (id) {
+        let list = store.currentList;
+        list.published = true;
+
+        let d = new Date();
+        let month = d.getMonth() + 1;
+        let date = d.getDate();
+        let year = d.getFullYear();
+
+        list.publishedDate = "" + month + "/" + date + "/" + year;
+        // console.log(list.publishedDate);
+        // console.log(list._id);
+        // console.log(id);
+
+        async function asyncPublishList(id) {
+            let response = await api.updatePlaylistById(id, list);
+            if (response.data.success) {
+                storeReducer({
+                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                    payload: list
+                });
+            }
+            history.push("/home");
+            store.loadIdNamePairs();
+            
+        }
+        asyncPublishList(id);
+    }
+
 
     store.getPlaylistSize = function () {
         return store.currentList.songs.length;
