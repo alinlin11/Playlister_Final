@@ -449,9 +449,61 @@ function GlobalStoreContextProvider(props) {
             }
             history.push("/home");
             store.loadIdNamePairs();
-            
+
         }
         asyncPublishList(id);
+    }
+
+    store.duplicateList = function (id) {
+        let list = store.currentList;
+        let playlists = [];
+
+        async function asyncGetList() {
+            let response = await api.getPlaylistPairs();
+
+            if (response.status === 200) {
+                let num = 0;
+                playlists = response.data.idNamePairs;
+
+                let i = 0;
+                while (i < playlists.length) {
+                    if (playlists[i].name == list.name) {
+                        num++;
+                        i = 0;
+                        list.name = "" + list.name + " " + num;
+                    }
+                    else {
+                        i++;
+                    }
+                }
+            }
+
+            async function asyncCreateNewList() {
+                let username = auth.getUsername();
+                const response = await api.createPlaylist(list.name, list.songs, auth.user.email, username, 0, 0, 0, false, " ", []);
+                console.log("createNewList response: " + response);
+                if (response.status === 201) {
+                    tps.clearAllTransactions();
+                    let newList = response.data.playlist;
+
+                    storeReducer({
+                        type: GlobalStoreActionType.CREATE_NEW_LIST,
+                        payload: newList
+                    }
+                    );
+                    // // IF IT'S A VALID LIST THEN LET'S START EDITING IT
+
+                    store.loadIdNamePairs();
+                    // store.setCurrentList(newList);
+                    history.push("/home");
+                }
+                else {
+                    console.log("API FAILED TO CREATE A NEW LIST");
+                }
+            }
+            asyncCreateNewList();
+        }
+        asyncGetList();
     }
 
 

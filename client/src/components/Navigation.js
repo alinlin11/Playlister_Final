@@ -2,6 +2,10 @@ import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import { useLocation } from 'react-router-dom';
 
+import HomeScreen from './HomeScreen'
+
+
+import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,14 +22,26 @@ export default function Navigation() {
   let location = useLocation();
   // console.log(location.pathname == '/home');
 
+  function handleHome() {
+    return <HomeScreen />;
+  }
+
+  function handleAllList() {}
+
+  function handleUserList() {}
+
+
+
   return (
     location.pathname == '/home' ?
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ background: "#000000" }}>
           <Toolbar>
             <Box sx={{ xs: 'none', md: 'incline' }} m={1}>
-              <HomeIcon size="large">
-              </HomeIcon>
+              <Button
+              onClick={handleHome}>
+                <HomeIcon size="large" />
+              </Button>
             </Box>
             <Box sx={{ xs: 'none', md: 'incline' }} m={1}>
               <GroupsIcon size="large">

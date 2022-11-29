@@ -78,6 +78,7 @@ function ListCard(props) {
 
     function handleDuplicateList(event, id) {
         event.stopPropagation();
+        store.duplicateList(id);
     }
 
     function handleAddSong(event) {
@@ -216,7 +217,7 @@ function ListCard(props) {
                                     marginLeft: "5px",
                                     marginTop: "16px"
                                 }}>
-                                Published:
+                                Published: {idNamePair.publishedDate}
                             </Typography>
 
                             <Typography
@@ -426,7 +427,8 @@ function ListCard(props) {
                             <Button variant="outlined"
                                 sx={{
                                     marginLeft: "5px"
-                                }}>
+                                }}
+                                onClick={(event) => handleDuplicateList(event, idNamePair._id)}>
                                 Duplicate
                             </Button>
 
