@@ -14,7 +14,7 @@ import {
     Statusbar,
     WorkspaceScreen,
     Navigation,
-    YouTubePlaylister
+    YouTubePlayer
 } from './components'
 /*
     This is our application's top-level component.
@@ -42,7 +42,7 @@ const App = () => {
                         <Route path="/lists" exact component={AllListScreen} />
                         {/* <Route path="/playlist/:id" exact component={WorkspaceScreen} /> */}
                     </Switch>
-                    {/* <YouTubePlaylister /> */}
+                    <YouTubePlayer />
                     <Statusbar />
                 </GlobalStoreContextProvider>
             </AuthContextProvider>

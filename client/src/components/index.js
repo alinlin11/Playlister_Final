@@ -15,7 +15,7 @@ import SplashScreen from './SplashScreen'
 import Statusbar from './Statusbar'
 import WorkspaceScreen from './WorkspaceScreen'
 import Navigation from './Navigation'
-import YouTubePlaylister from './YouTubePlaylister'
+import YouTubePlayer from './YouTubePlayer'
 
 /*
     This serves as a module so that we can import
@@ -41,5 +41,5 @@ export {
     Statusbar,
     WorkspaceScreen,
     Navigation,
-    YouTubePlaylister
+    YouTubePlayer
 }
