@@ -34,25 +34,38 @@ function Statusbar() {
         // </div> );
 
         location.pathname == '/home' ?
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="absolute" sx={{ background: "#000000", top:"100%" }}>
-                <Toolbar>
-                    <div id="playlister-statusbar">
-                        <div id="list-selector-heading">
-                            <Typography variant="h3">Your Lists</Typography>
-                        </div>
-                        <Fab
-                            color="primary"
-                            aria-label="add"
-                            id="add-list-button"
-                            onClick={handleCreateNewList}
-                        >
-                            <AddIcon />
-                        </Fab>
-                    </div >
-                </Toolbar>
-            </AppBar>
-        </Box> : <></>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="absolute" sx={{ background: "#000000", top: "100%" }}>
+                    <Toolbar>
+                        <div id="playlister-statusbar">
+                            <div id="list-selector-heading">
+                                <Typography variant="h3">Your Lists</Typography>
+                            </div>
+                            <Fab
+                                color="primary"
+                                aria-label="add"
+                                id="add-list-button"
+                                onClick={handleCreateNewList}
+                            >
+                                <AddIcon />
+                            </Fab>
+                        </div >
+                    </Toolbar>
+                </AppBar>
+            </Box> :
+
+            location.pathname == '/lists' ?
+                <Box sx={{ flexGrow: 1 }}>
+                    <AppBar position="absolute" sx={{ background: "#000000", top: "100%" }}>
+                        <Toolbar>
+                            <div id="playlister-statusbar">
+                                <div id="list-selector-heading">
+                                    <Typography variant="h3">Playlists</Typography>
+                                </div>
+                            </div >
+                        </Toolbar>
+                    </AppBar>
+                </Box> : <></>
     )
 
 }

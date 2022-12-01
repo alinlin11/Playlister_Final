@@ -159,7 +159,28 @@ getPlaylists = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Playlists not found` })
         }
-        return res.status(200).json({ success: true, data: playlists })
+        else {
+            console.log("Send the Playlist pairs");
+            // PUT ALL THE LISTS INTO ID, NAME PAIRS
+            let pairs = [];
+            for (let key in playlists) {
+                let list = playlists[key];
+                let pair = {
+                    _id: list._id,
+                    name: list.name,
+                    username: list.username,
+                    likes: list.likes,
+                    dislikes: list.dislikes,
+                    listens: list.listens,
+                    published: list.published,
+                    publishedDate: list.publishedDate,
+                    comments: list.comments
+                };
+                pairs.push(pair);
+            }
+            return res.status(200).json({ success: true, data: pairs })
+        }
+
     }).catch(err => console.log(err))
 }
 updatePlaylist = async (req, res) => {

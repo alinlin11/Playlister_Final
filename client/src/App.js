@@ -6,6 +6,7 @@ import { GlobalStoreContextProvider } from './store'
 import {
     AppBanner,
     HomeScreen,
+    AllListScreen,
     HomeWrapper,
     LoginScreen,
     RegisterScreen,
@@ -38,7 +39,8 @@ const App = () => {
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/home" exact component={HomeScreen} />
-                        <Route path="/playlist/:id" exact component={WorkspaceScreen} />
+                        <Route path="/lists" exact component={AllListScreen} />
+                        {/* <Route path="/playlist/:id" exact component={WorkspaceScreen} /> */}
                     </Switch>
                     {/* <YouTubePlaylister /> */}
                     <Statusbar />

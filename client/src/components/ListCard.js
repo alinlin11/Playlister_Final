@@ -55,6 +55,8 @@ function ListCard(props) {
         }
     }
 
+    // console.log(idNamePair);
+
     function handleToggleEdit(event) {
         event.stopPropagation();
         toggleEdit();
@@ -166,7 +168,6 @@ function ListCard(props) {
     else if (store.isRemoveSongModalOpen()) {
         modalJSX = <MUIRemoveSongModal />;
     }
-
 
     let cardElement =
         <ListItem
@@ -412,7 +413,7 @@ function ListCard(props) {
                                     marginLeft: "190px"
                                 }}
                                 onClick={(event) => handlePublish(event, idNamePair._id)}
-                                >
+                            >
                                 Publish
                             </Button>
 
