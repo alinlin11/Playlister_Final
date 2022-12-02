@@ -4,13 +4,11 @@ import AuthContext from '../auth'
 import SongCard from './SongCard'
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
+import EditListModal from './EditListModal'
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
@@ -20,7 +18,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
-import { style } from '@mui/system';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -72,7 +69,8 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            if (text != "") {
+            console.log(store.editNameInUse(text));
+            if (text != "" && store.editNameInUse(text) == false) {
                 let id = event.target.id.substring("list-".length);
                 store.changeListName(id, text);
             }
@@ -161,6 +159,9 @@ function ListCard(props) {
     }
     else if (store.isRemoveSongModalOpen()) {
         modalJSX = <MUIRemoveSongModal />;
+    }
+    else if(store.listNameError) {
+        modalJSX = <EditListModal />;
     }
 
     let cardElement =
@@ -327,7 +328,7 @@ function ListCard(props) {
                                     defaultValue={idNamePair.name}
                                     inputProps={{}}
                                     style={{ width: 100 }}
-                                    sx={{marginLeft: "5px", marginTop:"7px"}}
+                                    sx={{ marginLeft: "5px", marginTop: "7px" }}
                                 /> :
                                 <Typography
                                     sx={{
@@ -559,7 +560,7 @@ function ListCard(props) {
                                     marginLeft: "5px",
                                     bottom: "130px"
                                 }}>
-                                Published:
+                                Published: {idNamePair.publishedDate}
                             </Typography>
 
                             <Typography
@@ -570,7 +571,7 @@ function ListCard(props) {
                                     marginLeft: "400px",
                                     bottom: "150px"
                                 }}>
-                                Listens:
+                                Listens: {idNamePair.listens}
                             </Typography>
 
                             <Button

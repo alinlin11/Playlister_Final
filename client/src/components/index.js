@@ -16,6 +16,7 @@ import Statusbar from './Statusbar'
 import WorkspaceScreen from './WorkspaceScreen'
 import Navigation from './Navigation'
 import YouTubePlayer from './YouTubePlayer'
+import EditListModal from './EditListModal'
 
 /*
     This serves as a module so that we can import
@@ -41,5 +42,6 @@ export {
     Statusbar,
     WorkspaceScreen,
     Navigation,
-    YouTubePlayer
+    YouTubePlayer,
+    EditListModal
 }
