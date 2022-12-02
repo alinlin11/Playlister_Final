@@ -252,7 +252,9 @@ function GlobalStoreContextProvider(props) {
                 let playlist = response.data.playlist;
                 playlist.name = newName;
                 async function updateList(playlist) {
+                    console.log(playlist);
                     response = await api.updatePlaylistById(playlist._id, playlist);
+                    console.log(response);
                     if (response.data.success) {
                         async function getListPairs(playlist) {
                             response = await api.getPlaylistPairs();
@@ -373,7 +375,7 @@ function GlobalStoreContextProvider(props) {
                         let playlist = playlists[i];
                         publishedPlaylists.push(playlist);
                     }
-                       
+
                 }
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_PUBLISHED_PLAYLISTS,

@@ -40,20 +40,20 @@ function ListCard(props) {
 
     // console.log(store.currentList);
 
-    function handleLoadList(event, id) {
-        event.stopPropagation();
-        console.log("handleLoadList for " + id);
-        if (!event.target.disabled) {
-            let _id = event.target.id;
-            if (_id.indexOf('list-card-text-') >= 0)
-                _id = ("" + _id).substring("list-card-text-".length);
+    // function handleLoadList(event, id) {
+    //     event.stopPropagation();
+    //     console.log("handleLoadList for " + id);
+    //     if (!event.target.disabled) {
+    //         let _id = event.target.id;
+    //         if (_id.indexOf('list-card-text-') >= 0)
+    //             _id = ("" + _id).substring("list-card-text-".length);
 
-            console.log("load " + event.target.id);
+    //         console.log("load " + event.target.id);
 
-            // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
-        }
-    }
+    //         // CHANGE THE CURRENT LIST
+    //         store.setCurrentList(id);
+    //     }
+    // }
 
     // console.log(idNamePair);
 
@@ -68,6 +68,20 @@ function ListCard(props) {
             store.setIsListNameEditActive();
         }
         setEditActive(newActive);
+    }
+
+    function handleKeyPress(event) {
+        if (event.code === "Enter") {
+            if (text != "") {
+                let id = event.target.id.substring("list-".length);
+                store.changeListName(id, text);
+            }
+
+            toggleEdit();
+        }
+    }
+    function handleUpdateText(event) {
+        setText(event.target.value);
     }
 
     function handleDeleteList(event, id) {
@@ -116,26 +130,6 @@ function ListCard(props) {
         store.publishList(id);
     }
 
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
-            toggleEdit();
-        }
-    }
-    function handleUpdateText(event) {
-        setText(event.target.value);
-    }
-
-    function handleClick(event, id) {
-        event.stopPropagation();
-        if (event.detail === 2)
-            handleToggleEdit(event);
-
-        if (event.detail === 1)
-            handleExpand(event, id);
-    }
-
     function handleExpand(event, id) {
         event.stopPropagation();
         store.setCurrentList(id);
@@ -176,7 +170,8 @@ function ListCard(props) {
             sx={{ marginTop: '-10px', display: 'flex', p: 1 }}
             style={{ width: '100%', fontSize: '48pt' }}
             button
-            onClick={(event) => { handleClick(event, idNamePair._id) }}
+            onDoubleClick={(event) => { handleToggleEdit(event) }}
+            onClick={(event) => { handleExpand(event, idNamePair._id) }}
 
         >
             {expand == false ?
@@ -188,6 +183,7 @@ function ListCard(props) {
                         marginLeft: "5px",
                         borderRadius: 3
                     }}>
+
                     <Typography
                         sx={{
                             fontSize: "20px",
@@ -320,14 +316,28 @@ function ListCard(props) {
                                 marginLeft: "10px",
                                 borderRadius: 3
                             }}>
-                            <Typography
-                                sx={{
-                                    fontSize: "20px",
-                                    fontWeight: "bold",
-                                    marginLeft: "5px"
-                                }}>
-                                {idNamePair.name}
-                            </Typography>
+
+                            {editActive == true ?
+                                <TextField
+                                    size="small"
+                                    // id={"list-" + idNamePair._id}
+                                    label="Playlist Name"
+                                    onKeyPress={handleKeyPress}
+                                    onChange={handleUpdateText}
+                                    defaultValue={idNamePair.name}
+                                    inputProps={{}}
+                                    style={{ width: 100 }}
+                                    sx={{marginLeft: "5px", marginTop:"7px"}}
+                                /> :
+                                <Typography
+                                    sx={{
+                                        fontSize: "20px",
+                                        fontWeight: "bold",
+                                        marginLeft: "5px"
+                                    }}>
+                                    {idNamePair.name}
+                                </Typography>
+                            }
 
                             <Typography
                                 sx={{
@@ -438,7 +448,8 @@ function ListCard(props) {
                                     position: "relative",
                                     marginLeft: "630px",
                                     bottom: "20px"
-                                }}>
+                                }}
+                                onClick={handleCollapse}>
                                 <KeyboardDoubleArrowUpIcon size="large">
                                 </KeyboardDoubleArrowUpIcon>
                             </Button>
@@ -581,25 +592,25 @@ function ListCard(props) {
             {modalJSX}
         </ListItem >
 
-    if (editActive) {
-        cardElement =
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Playlist Name"
-                name="name"
-                autoComplete="Playlist Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{ style: { fontSize: 48 } }}
-                InputLabelProps={{ style: { fontSize: 24 } }}
-                autoFocus
-            />
-    }
+    // if (editActive) {
+    //     cardElement =
+    //         <TextField
+    //             margin="normal"
+    //             required
+    //             fullWidth
+    //             id={"list-" + idNamePair._id}
+    //             label="Playlist Name"
+    //             name="name"
+    //             autoComplete="Playlist Name"
+    //             className='list-card'
+    //             onKeyPress={handleKeyPress}
+    //             onChange={handleUpdateText}
+    //             defaultValue={idNamePair.name}
+    //             inputProps={{ style: { fontSize: 48 } }}
+    //             InputLabelProps={{ style: { fontSize: 24 } }}
+    //             autoFocus
+    //         />
+    // }
     return (
         cardElement
 

@@ -211,10 +211,6 @@ body {
   overflow-y: scroll;
 }
 
-#youtube_test_player {
-  border: solid 4px #37474F
-}
-
 .list-card,
 .selected-list-card,
 .unselected-list-card {
