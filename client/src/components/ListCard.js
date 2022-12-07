@@ -60,6 +60,7 @@ function ListCard(props) {
     }
 
     function toggleEdit() {
+        // console.log(store.currentList);
         let newActive = !editActive;
         if (newActive) {
             store.setIsListNameEditActive();
@@ -69,13 +70,14 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            console.log(store.editNameInUse(text));
-            if (text != "" && store.editNameInUse(text) == false) {
+            store.editNameInUse(idNamePair, text);
+            // console.log(store.listNameError);
+            if (text != "" && store.listNameError == false) {
                 let id = event.target.id.substring("list-".length);
-                store.changeListName(id, text);
+                store.changeListName(idNamePair._id, text);
+                console.log(store.idNamePairs);
+                toggleEdit();
             }
-
-            toggleEdit();
         }
     }
     function handleUpdateText(event) {
@@ -160,7 +162,7 @@ function ListCard(props) {
     else if (store.isRemoveSongModalOpen()) {
         modalJSX = <MUIRemoveSongModal />;
     }
-    else if(store.listNameError) {
+    else if (store.listNameError) {
         modalJSX = <EditListModal />;
     }
 

@@ -54,7 +54,7 @@ function Statusbar() {
                 </AppBar>
             </Box> :
 
-            location.pathname == '/lists' ?
+            location.pathname == '/lists' || '/userlist' ?
                 <Box sx={{ flexGrow: 1 }}>
                     <AppBar position="absolute" sx={{ background: "#000000", top: "100%" }}>
                         <Toolbar>

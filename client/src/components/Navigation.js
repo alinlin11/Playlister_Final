@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import HomeScreen from './HomeScreen'
 import AllListScreen from './AllListScreen';
+import UserListScreen from './UserListScreen';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -33,29 +34,36 @@ export default function Navigation() {
     return <AllListScreen />
   }
 
-  function handleUserList() { }
+  function handleUserList() {
+    history.push("/userlist");
+    return <UserListScreen />
+  }
 
 
 
   return (
-    location.pathname == '/home' || location.pathname == '/lists' ?
+    location.pathname == '/home' || location.pathname == '/lists' || location.pathname == '/userlist' ?
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ background: "#000000" }}>
           <Toolbar>
+
             <Box sx={{ marginLeft: "-30px" }}>
               <Button
                 onClick={handleHome}>
                 <HomeIcon size="large" />
               </Button>
             </Box>
+
             <Box sx={{ marginLeft: "-20px" }}>
               <Button
                 onClick={handleAllPublishedList}>
                 <GroupsIcon size="large" />
               </Button>
             </Box>
+
             <Box sx={{ marginLeft: "-20px" }}>
-              <Button>
+              <Button
+                onClick={handleUserList}>
                 <PersonIcon size="large">
                 </PersonIcon>
               </Button>

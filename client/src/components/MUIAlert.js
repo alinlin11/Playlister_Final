@@ -35,19 +35,18 @@ export default function MUIEditSongModal() {
     let modal = document.getElementById("alert-modal");
     modal.classList.remove("is-visible");
 
-    auth.noError();
   }
 
   return (
     <Modal
       id="alert-modal"
-      open={auth.error != null}
+      open={store.listNameError == true}
       // onClose={handleClose}
       aria-labelledby="alert-modal-title"
       aria-describedby="alert-modal-description"
     >
       <Box sx={style}>
-        <Alert severity="error"> {auth.error} </Alert>
+        <Alert severity="error"> CANNOT HAVE SAME PLAYLIST NAMES </Alert>
         <Button variant="text" sx={buttonStyle} onClick={handleClose}>X</Button>
       </Box>
     </Modal >
